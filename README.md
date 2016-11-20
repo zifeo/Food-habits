@@ -14,7 +14,7 @@ Switzerland is well known for its rich heritage: incredible landscapes, watches,
 ## Data description
 
 - restaurant menus (e.g. [LaFourchette](https://www.lafourchette.com), restaurant own websites)
-- general food classification and insights (e.g. [OpenFoodFacts](http://ch-en.openfoodfacts.org))
+- general food classification and insights (e.g. [OpenFoodFacts](http://ch-en.openfoodfacts.org), [OpenFood](https://www.openfood.ch))
 - health data (e.g. [Swiss Administration](https://www.bfs.admin.ch/bfs/en/home/statistics/catalogues-databases.html), [Open Health data](http://make.opendata.ch/wiki/data:health))
 
 Additionnal complementary datasets:
