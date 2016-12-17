@@ -147,3 +147,4 @@ tags
 .nfs*
 
 data/raw
+data/*.json
