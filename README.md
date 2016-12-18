@@ -36,6 +36,10 @@ Additionnal complementary datasets:
 
 ## Timeplan
 
-- november: data gathering
-- first part of december: analysis
-- last part of december: modelling and visualisation
+- [x] november: data gathering
+- [ ] first part of december: analysis
+- [ ] last part of december: modelling and visualisation
+
+## License
+
+Project is available under [Apache 2.0](./LICENSE) license and data belong their owners under appropriate licensing.
