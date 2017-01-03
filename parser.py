@@ -250,7 +250,7 @@ def parse_html(html, currency):
 
 # Parse all restaurants
 print("*** Opening file ***")
-f = open("data/raw/"+sys.argv[1]+".json", 'r')
+f = open("data/"+sys.argv[1]+".json", 'r')
 restaurants = json.load(f)
 parsed_data = {}
 currency = "CHF" if "ch" in sys.argv[1] else "EUR"
