@@ -68,15 +68,16 @@ def parse_html(html, currency):
         parsed_menu = None
         menu = html.select("section.menuCard li.cardCategory")
         if menu:
+            parsed_menu = {}
             for category in menu:
                 name = category.h3.string
                 meals = [meal.string for meal in category.select("div.cardCategory-itemTitle")]
-                prices = category.select("div.cardCatefory-itemPrice")
-                if prices != []:
-                    prices = [price.string for price in prices]
+                prices = category.select("div.cardCategory-itemPrice")
+                if prices:
+                    #prices = [price.string for price in prices]
+                    prices = [float(re.sub(r"[^\d\.]", '', price.string)) for price in prices]
                 else:
                     prices = [None for i in range(len(meals))]
-                parsed_menu = {}
                 parsed_menu[name] = dict(zip(meals, prices))
         del menu
         return parsed_menu
@@ -249,7 +250,7 @@ def parse_html(html, currency):
 
 # Parse all restaurants
 print("*** Opening file ***")
-f = open("data/"+sys.argv[1]+".json", 'r')
+f = open("data/raw/"+sys.argv[1]+".json", 'r')
 restaurants = json.load(f)
 parsed_data = {}
 currency = "CHF" if "ch" in sys.argv[1] else "EUR"
@@ -258,8 +259,7 @@ for restaurant in restaurants:
     uri = restaurant['uri']
     html = BeautifulSoup(restaurant['html'][0], 'html.parser')
     print(uri)
-    parsed_html = parse_html(html, currency)
-    parsed_data[uri] = parsed_html
+    parsed_data[uri] = parse_html(html, currency)
 
 del restaurants
 f.close()
