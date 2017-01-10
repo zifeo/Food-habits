@@ -1,12 +1,12 @@
 import scrapy
-from scrapy.crawler import CrawlerProcess
-from twisted.internet import reactor
 
-class CitiesSpider(scrapy.Spider):
-    name = "cities"
+
+class RestoSpider(scrapy.Spider):
+    name = "resto"
     start_urls = [
         'https://www.lafourchette.com/toutes-les-villes',
-        'https://www.lafourchette.ch/toutes-les-villes'
+        'https://www.lafourchette.ch/toutes-les-villes',
+        'https://www.thefork.be/toutes-les-villes'
     ]
 
     def parse(self, response):
