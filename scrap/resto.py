@@ -26,6 +26,7 @@ class RestoSpider(scrapy.Spider):
         if url:
             page = response.urljoin(url.strip())
             yield scrapy.Request(page, callback=self.parse_listing)
+
         restos = response.css('.resultItem-name a::attr(href)').extract()
         for resto in restos:
             page = response.urljoin(resto.strip())
