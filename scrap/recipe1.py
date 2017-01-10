@@ -27,7 +27,7 @@ class Recipe1Spider(scrapy.Spider):
         yield {
             'uri': response.url,
             'recipe': response.css('h1.c-article__title::text').extract_first(),
-            'breadcrumb': response.css('.c-breadcrumb span::text').extract(),
+            'breadcrumb': [b.strip() for b in response.css('.c-breadcrumb span::text').extract() if len(b.strip())],
             'quantity': response.css('h2.u-title-arvo-20-uppercase .yield::text').extract_first(),
             'content': response.css('.c-recipe-ingredients').extract_first(),
             'recipe2': response.css('h1.c-page-article__title::text').extract_first(),
