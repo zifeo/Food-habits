@@ -4,25 +4,23 @@ import scrapy
 class Recipe1Spider(scrapy.Spider):
     name = "recipe1"
     start_urls = [
-        'http://www.750g.com/recettes_aperitifs.htm',
-        'http://www.750g.com/recettes_entrees.htm',
-        'http://www.750g.com/recettes_plats.htm',
-        'http://www.750g.com/recettes_soupes_et_potages.htm',
-        'http://www.750g.com/recettes_gateaux.htm',
-        'http://www.750g.com/recettes_desserts.htm'
-    ]
+        "{}?page={}".format(cat, p)
+        for p in range(1, 2200)
+        for cat in [
+            'http://www.750g.com/recettes_aperitifs.htm',
+            'http://www.750g.com/recettes_entrees.htm',
+            'http://www.750g.com/recettes_plats.htm',
+            'http://www.750g.com/recettes_soupes_et_potages.htm',
+            'http://www.750g.com/recettes_gateaux.htm',
+            'http://www.750g.com/recettes_desserts.htm']
+        ]
 
     def parse(self, response):
-        urls = response.css('a.c-pagination__link::attr(href)').extract()
-        for url in urls:
-            page = response.urljoin(url.strip())
-            yield scrapy.Request(page, callback=self.parse)
-
         recipes = response.css('a.u-link-wrapper::attr(href)').extract()
         for recipe in recipes:
             page = response.urljoin(recipe.strip())
             yield scrapy.Request(page, callback=self.parse_recipe)
-            
+
     def parse_recipe(self, response):
         yield {
             'uri': response.url,
