@@ -13,7 +13,7 @@ class Recipe1Spider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        urls = response.css('#content ul a::attr(href)').extract()
+        urls = response.css('a.c-pagination__link::attr(href)').extract()
         for url in urls:
             page = response.urljoin(url.strip())
             yield scrapy.Request(page, callback=self.parse)
@@ -33,3 +33,4 @@ class Recipe1Spider(scrapy.Spider):
             'recipe2': response.css('h1.c-page-article__title::text').extract_first(),
             'content2': response.css('.c-diapo__text').extract_first(),
         }
+
