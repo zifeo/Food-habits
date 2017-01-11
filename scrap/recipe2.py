@@ -17,7 +17,7 @@ class Recipe2Spider(scrapy.Spider):
         url = response.css('.ccmcss_paginator_next a::attr(href)').extract_first()
         if url:
             page = response.urljoin(url.strip())
-            #yield scrapy.Request(page, callback=self.parse_listing)
+            yield scrapy.Request(page, callback=self.parse_listing)
         recipes = response.css('.bu_cuisine_title_4 a::attr(href)').extract()
         for recipe in recipes:
             page = response.urljoin(recipe.strip())
