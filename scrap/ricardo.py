@@ -25,7 +25,7 @@ class RicardoSpider(scrapy.Spider):
 
         if (next_page):
             next_page = response.urljoin(next_page.strip())
-            scrapy.Request(next_page, callback=self.parse_subcat)
+            yield scrapy.Request(next_page, callback=self.parse_subcat)
 
 
     def parse_recipe(self, response):
