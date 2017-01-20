@@ -36,7 +36,6 @@ class Recipe3Spider(scrapy.Spider):
         for recipe in recipes:
             page = response.urljoin(recipe.strip())
             yield scrapy.Request(page, callback=self.parse_recipe)
-            return
 
     def parse_recipe(self, response):
         yield {
