@@ -1,0 +1,7 @@
+From postgres to pandas
+
+docker run --rm -it -p 5432:5432 -v (pwd):/work postgres   
+docker exec -it xenodochial_montalcini /bin/sh
+psql -U postgres < openfood_20160108.dump
+\l
+\dt
