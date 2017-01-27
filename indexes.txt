@@ -1,0 +1,98 @@
+PUT recipes2
+{
+   "settings": {
+      "analysis": {
+         "analyzer": {
+            "custom_analyzer": {
+               "tokenizer": "standard",
+               "filter": [
+                    "lowercase",
+                    "custom_word_delimiter",
+                    "custom_ascii",
+                    "custom_stop",
+                    "custom_stemmer",
+                    "custom_length",
+                    "custom_bigram",
+                    "custom_spacing_removal",
+                    "trim"
+                ]
+            }
+         },
+         "filter": {
+            "custom_word_delimiter": {
+                "type": "word_delimiter",
+                "generate_word_parts": true,
+                "generate_number_parts": true,
+                "catenate_words": false,
+                "catenate_numbers": false,
+                "catenate_all": false,
+                "preserve_original": true,
+                "split_on_case_change": false,
+                "split_on_numerics": true,
+                "stem_english_possessive": false
+            },
+            "custom_ascii": {
+                "type" : "asciifolding",
+                "preserve_original" : true
+            },
+            "custom_spacing_removal": {
+                "type": "pattern_replace",
+                "pattern": "( +)",
+                "replacement": " "
+            },
+            "custom_stop": {
+                "type": "stop",
+                "stopwords": "_french_",
+                "ignore_case": true,
+                "remove_trailing": true
+            },
+            "custom_stemmer" : {
+                "type": "stemmer",
+                "name": "light_french"
+            },
+            "custom_bigram" : {
+                "type" : "shingle",
+                "min_shingle_size": 2,
+                "max_shingle_size": 5,
+                "output_unigrams": true,
+                "filler_token": ""
+            },
+            "custom_length": {
+                "type": "length",
+                "min": 2
+            }
+        }
+      }
+   },
+   "mappings": {
+        "750g": {
+            "properties": {
+                "name": {
+                    "type": "text",
+                    "term_vector": "yes",
+                    "analyzer": "custom_analyzer"
+                },
+                "ingredients": {
+                  "properties": {
+                    "content": {
+                      "type": "text",
+                      "term_vector": "yes",
+                      "analyzer": "custom_analyzer"
+                    }
+                  }
+                }
+            }
+        }
+   }
+}
+
+POST _reindex
+{
+  "source": {
+    "index": "recipes"
+  },
+  "dest": {
+    "index": "recipes2"
+  }
+}
+
