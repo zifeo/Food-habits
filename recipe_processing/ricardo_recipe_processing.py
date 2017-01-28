@@ -1,21 +1,38 @@
 #!/usr/bin/python3
 
 import re,json
+from elasticsearch import Elasticsearch
+from elasticsearch import helpers as eshelper
 
 f = open("../data/ricardo.json", "r")
-f2 = open("../data/ricardo_split.json", "w") # Format easier to read for humans
-f3 = open("../data/ricardo_split_condensed.json", "w")
 
-recettes = json.load(f)
+recipes = json.load(f)
 
 regex_quantity = r"\s*(?P<quantity>\d+([/\.,]\d+)?)\s*?" # Matches a number, a fraction or a float (with a . or a ,)
-regex_unit = r"[\s\d,\.]*(?P<unit>m[lL]|c[lL]|d[lL]|l|L|mg|g|kg|c\.\sà\ss\.|c\.\sà\sc\.|verres?|pincées?|poignées?)\s"
+regex_unit = r"[\s\d,\.]*(?P<unit>m[lL]|c[lL]|d[lL]|l|L|mg|g|kg|c\.\sà\ss\.|c\.\sà\sc\.|verre|pincée|poignée)\s"
 regex_remove_stopwords = r"(^|\s)(une?|de|petit[es]*|grand[es]*|gros[se]*|beaux?)\b"
 
-for recette in recettes:
+elasticsearch_entries = []
+for recipe in recipes:
     ingredients = []
+    fmt = {
+            '_index': 'recipes',
+            '_type': 'ricardo',
+            }
+    r = {
+            'name': recipe['title'].strip(),
+            'ingredients': []
+            }
 
-    for igd in recette['ingredients']:
+
+    nb_ppl = 1
+    if recipe['quantity']:
+        m = re.match(r"(^\d)", recipe['quantity'])
+        if m:
+            nb_ppl = int(m.group(0))
+
+
+    for igd in recipe['ingredients']:
         if igd and not (igd == "ou"):
             # Replace some unicode symbols
             igd = re.sub('\u0153', 'oe', igd)
@@ -49,6 +66,9 @@ for recette in recettes:
             igd = re.sub(r'c\.\s?à thé', 'c. à c.', igd)
             igd = re.sub(r'(c\.\s?à soupe)|(càs)', 'c. à s.', igd)
             igd = re.sub(r"[lL]itre(s)?", 'l', igd)
+            igd = re.sub(r"\b(verres)\b", 'verre', igd)
+            igd = re.sub(r"\b(poignées)\b", 'poignée', igd)
+            igd = re.sub(r"\b(pincées)\b", 'pincée', igd)
 
 
             igd_split = {}
@@ -61,12 +81,17 @@ for recette in recettes:
             if match:
                 quantity = match.group('quantity')
                 igd_split['quantity'] = float(quantity.replace(',', '.'))
+            else:
+                continue
 
             # Extract unit
             match = re.match(regex_unit, igd)
             if match:
                 unit = match.group('unit')
-                igd_split['unit'] = unit.lower()                
+                igd_split['unit'] = unit.lower()
+            else:
+                igd_split['unit'] = unit
+
 
             # Convert to g or mL
             if quantity and unit:
@@ -90,17 +115,43 @@ for recette in recettes:
                     igd_split['quantity'] *= 1000
                     igd_split['unit'] = "ml"
 
+                elif igd_split['unit'] == "c. à c.":
+                    igd_split['quantity'] *= 5
+                    igd_split['unit'] = "ml"
+
+                elif igd_split['unit'] == "c. à s.":
+                    igd_split['quantity'] *= 15
+                    igd_split['unit'] = "ml"
+
+                elif igd_split['unit'] == "verre":
+                    igd_split['quantity'] *= 300
+                    igd_split['unit'] = "ml"
+
+                elif igd_split['unit'] == "poignée":
+                    igd_split['quantity'] *= 50
+                    igd_split['unit'] = "g"
+
+                elif igd_split['unit'] == "pincée":
+                    igd_split['quantity'] *= 3
+                    igd_split['unit'] = "g"
+
+
+            igd_split['quantity'] /= nb_ppl
+
             # Extract ingredient
             regex_remove_matched = r"({})|(\s?{}\s+)".format(quantity, unit)
             ingredient = re.sub(regex_remove_matched, '', igd).strip()
             ingredient = re.sub(regex_remove_stopwords, '', ingredient).strip()
 
-            igd_split['ingredient'] = ingredient
+            igd_split['content'] = ingredient
 
+            
         if igd_split:
-            ingredients.append(igd_split)
+            r['ingredients'].append(igd_split)
+    
 
-    recette['ingredients'] = ingredients
+    fmt['_source'] = r
+    elasticsearch_entries.append(fmt)
 
-json.dump(recettes, f2, indent=0, ensure_ascii=False)  # Format easier to read for humans
-json.dump(recettes, f3, ensure_ascii=False)
+client = Elasticsearch(hosts='http://')
+eshelper.bulk(client, elasticsearch_entries)
