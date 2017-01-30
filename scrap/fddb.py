@@ -12,13 +12,21 @@ class FddbSpider(scrapy.Spider):
             "friterie", "fruits", "huiles_et_lipides", "legumes", 
             "laitage", "poisson", "sucreries"]
         ]
+    custom_settings =  {
+#        "CONCURRENT_REQUESTS": 1,
+#        "CONCURRENT_ITEMS": 5,
+#        "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
+        "DUPEFILTER_DEBUG": True,
+            }
 
     
     def parse(self, response):
         # Parse groups if there are any
         groups_b = response.css('div.leftblock h3:first-child::text').extract_first()
         if groups_b:
-            groups = response.css('div.leftblock div.standardcontent:first-child table td:first-child a::attr(href)').extract()
+            #groups = response.css('div.leftblock div.standardcontent:first-child table td:first-child a::attr(href)').extract()
+            groups = response.css('div.leftblock div.standardcontent:first-child table td table td:first-child a::attr(href)').extract()
+            print("From",response.url,":\n(groups)\n",groups)
             for group in groups:
                 group_page = response.urljoin(group.strip())
                 yield scrapy.Request(group_page, callback=self.parse)
@@ -29,6 +37,7 @@ class FddbSpider(scrapy.Spider):
             nb_child = "n + 2" if groups_b else "n"
             query = 'div.leftblock > div:nth-child({}) table a::attr(href)'.format(nb_child)
             products = response.css(query).extract()
+            print("From",response.url,":\n(products)\n",products)
             for product in products:
                 product_page = response.urljoin(product.strip())
                 yield scrapy.Request(product_page, callback=self.parse_product)
@@ -51,7 +60,7 @@ class FddbSpider(scrapy.Spider):
 
                 # Skip vitamins and water content
                 name = html_name.span.string
-                if "Vitamin" in name or "Water" in name:
+                if "Water" in name:
                     continue
                 
                 # Use same names as those already in ElasticSearch
@@ -73,17 +82,23 @@ class FddbSpider(scrapy.Spider):
 
                 nutriment['name'] = name
                 nutriment['unit'] = unit
+                nutriment['per_day'] = 0
+                nutriment['per_portion'] = 0
                 nutriment['per_hundred'] = value
+                nutriment['rdi'] = 0
                 
                 nutriments.append(nutriment)
-
+        
+        unit = 'ml' if 'ml' in response.css("div.leftblock div.itemsec2012:first-child h2::text").extract_first() else 'g'
         yield {
                 '_index': "products",
                 '_type': "FDDB",
                 '_source': {
                     'name': response.css("h1#fddb-headline1::text").extract_first(),
-                    'unit': 'ml' if 'ml' in response.css("div.leftblock div.itemsec2012:first-child h2::text").extract_first() else 'g',
+                    'unit': unit,
+                    'unit_quantity': unit,
+                    'unit_portion': 0,
+                    'quantity': 100,
                     'nutriments': nutriments
                     }
                 }
-

@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 
 import re,json
+from tqdm import tqdm
+from bs4 import BeautifulSoup as bs
 from elasticsearch import Elasticsearch
 from elasticsearch import helpers as eshelper
 
-f = open("../data/ricardo.json", "r")
+f = open("../data/journal_femmes.json", "r")
+#f2 = open("../data/journal_femmes_split.json", "w")
 
 recipes = json.load(f)
 
@@ -13,14 +16,17 @@ regex_unit = r"[\s\d,\.]*(?P<unit>m[lL]|c[lL]|d[lL]|l|L|mg|g|kg|c\.\sà\ss\.|c\.
 regex_remove_stopwords = r"(^|\s)(une?|de|petit[es]*|grand[es]*|gros[se]*|beaux?)\b"
 
 elasticsearch_entries = []
-for recipe in recipes:
+for recipe in tqdm(recipes):
+    if not recipe['recipe']:
+        continue
+
     ingredients = []
     fmt = {
             '_index': 'recipes',
-            '_type': 'ricardo',
+            '_type': 'journal_femmes',
             }
     r = {
-            'name': recipe['title'].strip(),
+            'name': recipe['recipe'].strip(),
             'ingredients': []
             }
 
@@ -29,16 +35,21 @@ for recipe in recipes:
     if recipe['quantity']:
         m = re.match(r"(^\d)", recipe['quantity'])
         if m:
-            nb_ppl = int(m.group(0))
+            tmp = int(m.group(0))
+            nb_ppl = tmp if tmp > 0 else 1
+
+    html_content = bs(recipe['content'], 'html.parser')
+    recipe['content'] = [li.text.strip() for li in html_content.select('li')]
 
 
-    for igd in recipe['ingredients']:
-        if igd and not (igd == "ou"):
+    for igd in recipe['content']:
+        if igd and not (igd == "ou") and not "Pour " in igd:
             # Replace some unicode symbols
             igd = re.sub('\u0153', 'oe', igd)
             igd = re.sub('\t', ' ', igd) 
+            igd = re.sub(regex_remove_stopwords, '', igd).strip()
             
-            # Replace fractions by floats
+            # Replace common fractions by floats
             igd = re.sub('(\u00bc)|(1/4)', '0.25', igd)
             igd = re.sub('(\u00bd)|(1/2)', '0.5', igd)
             igd = re.sub('(\u00be)|(3/4)', '0.75', igd)
@@ -51,11 +62,34 @@ for recipe in recipes:
             igd = re.sub('2/5', '0.4', igd)
             igd = re.sub('3/5', '0.6', igd)
             igd = re.sub('4/5', '0.8', igd)
+            igd = re.sub('1/6', '0.166', igd)
+            igd = re.sub('4/6', '0.66', igd)
             igd = re.sub('5/6', '0.83', igd)
             igd = re.sub('7/8', '0.875', igd)
+            igd = re.sub('8/9', '0.889', igd)
+            igd = re.sub('1/10', '0.1', igd)
+            igd = re.sub('3/10', '0.3', igd)
+            igd = re.sub('6/10', '0.6', igd)
+            # Replace weird fractions found in data 
+            igd = re.sub('1/1', '1', igd)
+            igd = re.sub('4/2', '2', igd)
+            igd = re.sub('80/85', '0.841', igd)
+            igd = re.sub('360/400', '0.9', igd)
+            igd = re.sub('100/130', '0.769', igd)
+            igd = re.sub('115/120', '0.958', igd)
+            igd = re.sub('130/140', '0.929', igd)
+            igd = re.sub('750/800', '0.938', igd)
+            igd = re.sub('(6/7|60/70)', '0.857', igd)
+            igd = re.sub('(25/30|100/120)', '0.83', igd)
+            igd = re.sub('(500/600|50/60)', '0.83', igd)
+            igd = re.sub('(90/95|360/380)', '0.947', igd)
+            igd = re.sub('(10/15|100/150|200/300)', '0.66', igd)
+            igd = re.sub('(2/4|5/10|4/8|10/20|8/16)', '0.5', igd)
+            igd = re.sub('(6/8|12/16|15/20|150/200|300/400)', '0.75', igd)
+            igd = re.sub('(8/10|12/15|20/25|40/50|48/60|80/100|100/125|200/250|400/500)', '0.8', igd)
 
             # Replace/remove some patterns
-            igd = re.sub(r"\s*\([\s\w\d\.,/]+\)", '', igd)   # remove parenthesis blocks
+            igd = re.sub(r"\s*\([\s\w\d\.,/\-'\"]+\)", '', igd)   # remove parenthesis blocks
             igd = re.sub('millilitres', 'ml', igd)
             igd = re.sub('centilitres', 'cl', igd)
             igd = re.sub('decilitres', 'dl', igd)
@@ -63,13 +97,13 @@ for recipe in recipes:
             igd = re.sub(r'kilogramme(s)?', 'kg', igd)
             igd = re.sub(r'[lL]itre(s)?', 'l', igd)
             igd = re.sub(r'cuillères?', 'c.', igd)
-            igd = re.sub(r'c\.\s?à thé', 'c. à c.', igd)
+            igd = re.sub(r'c\.\s?à (thé|café)', 'c. à c.', igd)
             igd = re.sub(r'(c\.\s?à soupe)|(càs)', 'c. à s.', igd)
             igd = re.sub(r"[lL]itre(s)?", 'l', igd)
             igd = re.sub(r"\b(verres)\b", 'verre', igd)
             igd = re.sub(r"\b(poignées)\b", 'poignée', igd)
             igd = re.sub(r"\b(pincées)\b", 'pincée', igd)
-
+            
 
             igd_split = {}
             quantity = None
@@ -152,5 +186,6 @@ for recipe in recipes:
 
     fmt['_source'] = r
     elasticsearch_entries.append(fmt)
-client = Elasticsearch(hosts='http://')
+#json.dump(elasticsearch_entries, f2, indent=0, ensure_ascii=False)
+client = Elasticsearch(hosts='http://51.15.135.251:23489')
 eshelper.bulk(client, elasticsearch_entries)
