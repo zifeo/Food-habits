@@ -7,33 +7,20 @@ PUT recipes
                "tokenizer": "standard",
                "filter": [
                     "lowercase",
-                    "custom_word_delimiter",
                     "custom_ascii",
                     "custom_stop",
                     "custom_stemmer",
                     "custom_length",
-                    "custom_bigram",
                     "custom_spacing_removal",
+                    "custom_bigram",
                     "trim"
                 ]
             }
          },
          "filter": {
-            "custom_word_delimiter": {
-                "type": "word_delimiter",
-                "generate_word_parts": true,
-                "generate_number_parts": true,
-                "catenate_words": false,
-                "catenate_numbers": false,
-                "catenate_all": false,
-                "preserve_original": true,
-                "split_on_case_change": false,
-                "split_on_numerics": true,
-                "stem_english_possessive": false
-            },
             "custom_ascii": {
                 "type" : "asciifolding",
-                "preserve_original" : true
+                "preserve_original" : false
             },
             "custom_spacing_removal": {
                 "type": "pattern_replace",
@@ -53,8 +40,8 @@ PUT recipes
             "custom_bigram" : {
                 "type" : "shingle",
                 "min_shingle_size": 2,
-                "max_shingle_size": 5,
-                "output_unigrams": true,
+                "max_shingle_size": 2,
+                "output_unigrams": false,
                 "filler_token": ""
             },
             "custom_length": {
@@ -70,14 +57,16 @@ PUT recipes
                 "name": {
                     "type": "text",
                     "term_vector": "yes",
-                    "analyzer": "custom_analyzer"
+                    "analyzer": "custom_analyzer",
+                    "fielddata": true
                 },
                 "ingredients": {
                   "properties": {
                     "content": {
                       "type": "text",
                       "term_vector": "yes",
-                      "analyzer": "custom_analyzer"
+                      "analyzer": "custom_analyzer",
+                      "fielddata": true
                     }
                   }
                 }
@@ -86,17 +75,7 @@ PUT recipes
    }
 }
 
-POST _reindex
-{
-  "source": {
-    "index": "recipes"
-  },
-  "dest": {
-    "index": "recipes2"
-  }
-}
-
-PUT products
+PUT recipes_nested
 {
    "settings": {
       "analysis": {
@@ -105,33 +84,20 @@ PUT products
                "tokenizer": "standard",
                "filter": [
                     "lowercase",
-                    "custom_word_delimiter",
                     "custom_ascii",
                     "custom_stop",
                     "custom_stemmer",
                     "custom_length",
-                    "custom_bigram",
                     "custom_spacing_removal",
+                    "custom_bigram",
                     "trim"
                 ]
             }
          },
          "filter": {
-            "custom_word_delimiter": {
-                "type": "word_delimiter",
-                "generate_word_parts": true,
-                "generate_number_parts": true,
-                "catenate_words": false,
-                "catenate_numbers": false,
-                "catenate_all": false,
-                "preserve_original": true,
-                "split_on_case_change": false,
-                "split_on_numerics": true,
-                "stem_english_possessive": false
-            },
             "custom_ascii": {
                 "type" : "asciifolding",
-                "preserve_original" : true
+                "preserve_original" : false
             },
             "custom_spacing_removal": {
                 "type": "pattern_replace",
@@ -151,7 +117,85 @@ PUT products
             "custom_bigram" : {
                 "type" : "shingle",
                 "min_shingle_size": 2,
-                "max_shingle_size": 5,
+                "max_shingle_size": 2,
+                "output_unigrams": false,
+                "filler_token": ""
+            },
+            "custom_length": {
+                "type": "length",
+                "min": 2
+            }
+        }
+      }
+   },
+   "mappings": {
+        "_default_": {
+            "properties": {
+                "name": {
+                    "type": "text",
+                    "term_vector": "yes",
+                    "analyzer": "custom_analyzer",
+                    "fielddata": true
+                },
+                "ingredients": {
+                  "type": "nested",
+                  "properties": {
+                    "content": {
+                      "type": "text",
+                      "term_vector": "yes",
+                      "analyzer": "custom_analyzer",
+                      "fielddata": true
+                    }
+                  }
+                }
+            }
+        }
+   }
+}
+
+PUT products1
+{
+   "settings": {
+      "analysis": {
+         "analyzer": {
+            "custom_analyzer": {
+               "tokenizer": "standard",
+               "filter": [
+                    "lowercase",
+                    "custom_ascii",
+                    "custom_stop",
+                    "custom_stemmer",
+                    "custom_length",
+                    "custom_spacing_removal",
+                    "custom_bigram",
+                    "trim"
+                ]
+            }
+         },
+         "filter": {
+            "custom_ascii": {
+                "type" : "asciifolding",
+                "preserve_original" : false
+            },
+            "custom_spacing_removal": {
+                "type": "pattern_replace",
+                "pattern": "( +)",
+                "replacement": " "
+            },
+            "custom_stop": {
+                "type": "stop",
+                "stopwords": "_french_",
+                "ignore_case": true,
+                "remove_trailing": true
+            },
+            "custom_stemmer" : {
+                "type": "stemmer",
+                "name": "light_french"
+            },
+            "custom_bigram" : {
+                "type" : "shingle",
+                "min_shingle_size": 2,
+                "max_shingle_size": 2,
                 "output_unigrams": true,
                 "filler_token": ""
             },
@@ -168,10 +212,18 @@ PUT products
                 "name": {
                     "type": "text",
                     "term_vector": "yes",
-                    "analyzer": "custom_analyzer"
+                    "analyzer": "custom_analyzer",
+                    "fielddata": true,
+                    "fields": {
+                      "length": { 
+                        "type": "token_count",
+                        "analyzer": "standard"
+                      }
+                    }
                 }
             }
         }
    }
 }
+
 
