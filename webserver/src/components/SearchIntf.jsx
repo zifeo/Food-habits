@@ -48,6 +48,8 @@ class SearchIntf extends React.Component {
               defaultValue={term}
               style={{
                 "marginRight": "5px",
+                "marginTop": "8px",
+                "marginBottom": "10px",
                 "width": "60%"
               }}
               onChange={
@@ -71,13 +73,21 @@ class SearchIntf extends React.Component {
           </span>
         })
       }
+      <div>
       <Button
           type="ghost" 
           shape="circle" 
           icon="plus" 
           onClick={this.addEvent}
+          style={{
+                "marginBottom": "10px",
+              }}
         />
-      <Button type="primary" onClick={this.handleSubmit}>
+      </div>
+      <Button type="primary" onClick={this.handleSubmit}
+          style={{
+                "marginBottom": "10px",
+              }}>
         Show trend
       </Button>
     </div>

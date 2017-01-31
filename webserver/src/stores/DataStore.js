@@ -37,13 +37,14 @@ export default class DataStore {
     this.departmentsResult = []
     var query = []
 
-    if (searches.length > 0 && searches[0] != "") {
+    /*if (searches.length > 0 && searches[0] != "") {
 
       searches.forEach((s) => {
+        dep_queries = []
         this.departmentsGeoJSON.features.forEach((dep) => {
           var code = dep.properties.code
 
-          query.push({
+          dep_queries.push({
             query: {
               index: 'restaurants',
               scroll: '30s',
@@ -83,6 +84,8 @@ export default class DataStore {
             } 
           })
         })
+
+        query.push(dep_queries)
       })
 
     } else {
@@ -119,17 +122,18 @@ export default class DataStore {
         })
       })
     }
-
-    console.log(query)
+    console.log("queries")
+    console.log(len(query))
     
     query.forEach((q) => {
+
       this.queryElasticSearch(
         q.query, 
         (acc) => {
           this.departmentsResult.push([q.code, acc])
         }
       )
-    })
+    })*/
   }
 
   @action loadRestaurantsQuery(searches) {
@@ -145,6 +149,7 @@ export default class DataStore {
           body: {
             query: {
               multi_match: {
+                type: "phrase",
                 query: s,
                 fields: [
                   "mains.name", 
@@ -182,7 +187,7 @@ export default class DataStore {
     }
 
     console.log(query)
-    
+
     query.forEach((q) => {
       this.queryElasticSearch(
         q, 

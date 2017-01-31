@@ -10,31 +10,14 @@ const Map_Selector = ({ viewStore, dataStore, params: { id, type } }) => {
     <p>Choose what type of map you want to see:</p>
     <Select
       key="granularity_filter"
-      style={{ width: '100%' }}
-      placeholder="Select granularity"
+      style={{ width: '100%', "marginTop": "10px" }}
+      defaultValue="Restaurant"
       onChange={(selected) => { 
         viewStore.setGranularity(selected)
         dataStore.load(selected, viewStore.searches)
       }}
     >
       <Option value="Restaurant">Restaurant</Option>
-      <Option value="Departement/Canton">Departement/Canton</Option>
-      <Option value="Region/Canton">Region/Canton</Option>
-    </Select>
-    <br />
-    <br />
-    <h2>Nutriments</h2>
-    <p>Nutriments for comparaison:</p>
-    <Select
-      multiple
-      key="nutriments_filters"
-      style={{ width: '100%' }}
-      placeholder="Select the nutriments to shows"
-      onChange={(selected) => { viewStore.filters = { type: 'research_group', selected }; }}
-    >
-      {dataStore.nutriments.map(
-        r => <Option key={r.id} value={r.id.toString()}>{r.name}</Option>
-      )}
     </Select>
   </div>;
 };

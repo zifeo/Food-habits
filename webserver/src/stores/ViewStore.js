@@ -2,8 +2,51 @@ import { observable, computed, action } from 'mobx';
 import L from 'leaflet';
 import markerClusterGroup from 'leaflet.markercluster'
 
+const color = [
+    new L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    }),
+    new L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    }),
+    new L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    }),
+    new L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    }),
+    new L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    })
+  ]
+
 export default class ViewStore {
-  @observable granularity = ""
+  @observable granularity = "Restaurant"
   @observable searches = [""]
   mymap = null
   current_layer = []
@@ -39,20 +82,30 @@ export default class ViewStore {
     this.current_layer.push(layer)
   }
 
-  addRestaurantLayer(results) {
-    console.log("markers")
-    var markers = L.markerClusterGroup({})
-    console.log("allmarkers")
+  addRestaurantLayer(results, i) {
+    console.log(color[i])
     var allMarkers = results.map((r) => {
-      var marker = L.marker([r.lat, r.lng]);
+      var marker = L.marker(
+        [r.lat, r.lng],  
+        {icon: color[i]}
+      );
+      
       marker.bindPopup(r.name)
       return marker
     })
-    console.log("adding")
-    markers.addLayers(allMarkers)
-    console.log("addt")
-    markers = markers.addTo(this.mymap)
-    console.log("push")
-    this.current_layer.push(markers)
+
+    if (results.length > 1000) {
+      var markers = L.markerClusterGroup()
+      markers.addLayers(allMarkers)
+      markers = markers.addTo(this.mymap)
+      this.current_layer.push(markers)
+    } else {
+      allMarkers.forEach((m) => {
+        m.addTo(this.mymap)
+      })
+      this.current_layer.push(...allMarkers)
+    }
+    
+    
   }
 }

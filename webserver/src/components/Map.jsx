@@ -41,8 +41,9 @@ class Map extends React.Component {
           console.log("show")
           console.log(this.props.dataStore.restaurantsResult)
           this.props.viewStore.resetLayers()
-          this.props.dataStore.restaurantsResult.forEach((res) => {
-            this.props.viewStore.addRestaurantLayer(res)
+          this.props.dataStore.restaurantsResult.forEach((res, i) => {
+            console.log(i)
+            this.props.viewStore.addRestaurantLayer(res, i)
           })
           
         }
