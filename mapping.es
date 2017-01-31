@@ -41,7 +41,7 @@ PUT recipes
                 "type" : "shingle",
                 "min_shingle_size": 2,
                 "max_shingle_size": 2,
-                "output_unigrams": false,
+                "output_unigrams": true,
                 "filler_token": ""
             },
             "custom_length": {
@@ -118,7 +118,7 @@ PUT recipes_nested
                 "type" : "shingle",
                 "min_shingle_size": 2,
                 "max_shingle_size": 2,
-                "output_unigrams": false,
+                "output_unigrams": true,
                 "filler_token": ""
             },
             "custom_length": {
