@@ -1,6 +1,9 @@
-# First tried with marmiton.py.bck to scrap all, then added video exclusion, then url testing
-# Scraped all recipes' URL with marmiton_urls.py then applied sort and uniq 
+# Marmiton Scraping
+We first tried to scrap and parse all Marmiton's recipes with the marmiton_naive.py file, but quickly got blocked by reCaptcha.
+So we created marmiton_urls.py to gather many recipes' URLs not caring about duplicates which gave us ~500k. Then we sorted them and removed any duplicates, which gaves us the correct number of recipes hosted on Marmiton.
+Finally, with the marmiton.py file which uses those URLs, we parsed the data we needed from each recipe by running it as many times as necessary. It only scraps 1000 URLs at a time in order to avoid Marmiton limitations. 
 
+## Usage
 ### Create folder marmiton_data
 mkdir marmiton_data
 
@@ -30,14 +33,13 @@ for url in `cat marmiton_data/urls-all`; do grep -m1 -P "$url" marmiton_data/scr
 # Add mising commas
 sed -i.bak 's/}$/},/g' marmiton_data/uniq_data.json
 
-
-# Remove comma on last line
+### Remove comma on last line
 sed -i '$s/},$/}/' marmiton_data/uniq_data.json
 
 
-# Add brackets at the beginning and end of the file
+### Add brackets at the beginning and end of the file
 sed -i -e '1s/^/[\n/' -e '$s/$/\n]/' marmiton_data/uniq_data.json
 
-
+### Clean
 mv marmiton_data/uniq_data.json ./marmiton.json
 rm --ri marmiton_data

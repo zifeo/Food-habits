@@ -4,8 +4,6 @@ import json
 import sys
 from bs4 import BeautifulSoup
 
-# menu fail
-# ratings and review not executed
 
 def parse_html(html, currency):
 
@@ -110,8 +108,6 @@ def parse_html(html, currency):
         return parsed_drinks
     
 
-
-
     def get_gps(html):
         parsed_gps = None
         gps = html.select("div[data-gps-lat]")
@@ -122,8 +118,6 @@ def parse_html(html, currency):
             parsed_gps['lng'] = float(attributes['data-gps-lng'])
         del gps
         return parsed_gps
-
-
 
        
     def get_schedule(html):

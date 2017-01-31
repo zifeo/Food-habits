@@ -7,7 +7,6 @@ from elasticsearch import Elasticsearch
 from elasticsearch import helpers as eshelper
 
 f = open("../data/journal_femmes.json", "r")
-#f2 = open("../data/journal_femmes_split.json", "w")
 
 recipes = json.load(f)
 
@@ -186,6 +185,6 @@ for recipe in tqdm(recipes):
 
     fmt['_source'] = r
     elasticsearch_entries.append(fmt)
-#json.dump(elasticsearch_entries, f2, indent=0, ensure_ascii=False)
-client = Elasticsearch(hosts='http://51.15.135.251:23489')
+
+client = Elasticsearch(hosts='http://')
 eshelper.bulk(client, elasticsearch_entries)
