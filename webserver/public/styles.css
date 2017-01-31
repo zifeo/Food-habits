@@ -1,0 +1,18 @@
+#graph-container {
+  width: 100%;
+  height: 90%;
+}
+
+.padded-col {
+  padding: 20px !important;
+}
+
+#details ul li {
+  list-style: none;
+  margin-left: 10px;
+}
+
+#mapid {
+  height: 100%;
+}
+

@@ -1,0 +1,31 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset=utf-8/>
+  <title>React, MobX and Express boilerplate</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.0/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.0/dist/MarkerCluster.Default.css" />
+  <link href="/styles.css" rel="stylesheet">
+  <link href="/favicon.ico" rel="icon" type="image/x-icon" />
+  <script language="javascript" type="text/javascript">
+    /* Script so that the link.click() works also on Firefox */
+    if (!HTMLElement) {
+      var HTMLElement = Element;
+    }
+
+    HTMLElement.prototype.click = function () {
+      var evt = this.ownerDocument.createEvent('MouseEvents');
+      evt.initMouseEvent('click', true, true, this.ownerDocument.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+      this.dispatchEvent(evt);
+    }
+  </script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="/bundle.js"></script>
+</body>
+
+</html>
