@@ -4,7 +4,8 @@
   "description": "This is a boilerplate to use ReactJS with React-router and MobX on top of an ExpressJS server.",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "build:prod": "webpack --config webpack.production.config.js"
   },
   "author": "Timon Zimmermann",
   "license": "MIT",

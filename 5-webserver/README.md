@@ -31,6 +31,8 @@ the app will be run and available at:
 ## 5. Small visualization using the elastic search database we created.
 You can search for dishes in the trend field to show which restaurants have it in one of their meals.
 
+There is an instance running at this address 51.15.135.251:5000 (It will be shutdown in the beginning of the next semester)
+
 We use it to show how some dishes are present only in some regions.
 
 Some easy examples :

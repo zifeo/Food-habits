@@ -4,7 +4,6 @@ import { observer, inject } from 'mobx-react';
 import { Col } from 'antd';
 
 import Map from './Map';
-import Details from './Details';
 
 const RightPanel = (props) => {
   const { dataStore, viewStore } = props;

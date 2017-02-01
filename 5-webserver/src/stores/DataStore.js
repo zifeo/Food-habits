@@ -7,7 +7,7 @@ export default class DataStore {
   @observable restaurantsResult = []
 
   client = new elasticsearch.Client({
-    host: 'http://51.15.135.251:23489',
+    host: '51.15.135.251:23489',
     apiVersion: '5.x',
     log: 'info'
   });
