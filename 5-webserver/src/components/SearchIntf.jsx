@@ -12,16 +12,11 @@ class SearchIntf extends React.Component {
     this.state = {search_terms: [""]}
   }
 
-  componentDidMount() {
-    
-  }
-
   deleteEvent = (iRemove) => {
     return (e) => {
       this.setState({
         search_terms: this.state.search_terms.filter( (e, i) => i != iRemove)
       })
-      
     }
   }
 

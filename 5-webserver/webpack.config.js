@@ -6,10 +6,6 @@ const path = require('path');
 const BUILD_DIR = path.resolve(__dirname, 'public');
 const APP_DIR = path.resolve(__dirname, 'src');
 
-const commitHash = require('child_process')
-  .execSync('git rev-parse HEAD')
-  .toString();
-
 const config = {
   /*
   Note: This is the best option for development because
@@ -29,9 +25,6 @@ const config = {
     extensions: ['', '.jsx', '.js'],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      __COMMIT_HASH__: JSON.stringify(commitHash),
-    }),
     // Ensures consistent build hashes
     new webpack.optimize.OccurenceOrderPlugin(),
     // Self-explanatory

@@ -2,7 +2,7 @@ import { observable, computed, action } from 'mobx';
 import L from 'leaflet';
 import markerClusterGroup from 'leaflet.markercluster'
 
-const color = [
+const icons = [
     new L.Icon({
       iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -73,23 +73,12 @@ export default class ViewStore {
     this.current_layer = []
   }
 
-  addGeoJsonLayer(results, GeoJSON) {
-    var layer = L.geoJSON(GeoJSON, {
-      style: function(feature) {
-        console.log(feature.properties.code)
-      }
-    }).addTo(this.mymap)
-    this.current_layer.push(layer)
-  }
-
   addRestaurantLayer(results, i) {
-    console.log(color[i])
     var allMarkers = results.map((r) => {
       var marker = L.marker(
         [r.lat, r.lng],  
-        {icon: color[i]}
+        {icon: icons[i]}
       );
-      
       marker.bindPopup(r.name)
       return marker
     })
@@ -105,7 +94,5 @@ export default class ViewStore {
       })
       this.current_layer.push(...allMarkers)
     }
-    
-    
   }
 }

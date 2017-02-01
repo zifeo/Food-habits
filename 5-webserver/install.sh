@@ -14,6 +14,7 @@ apt-get install -y nodejs
 git clone https://github.com/sdfepfl/javascript-boilerplate
 cd javascript-boilerplate
 
+npm install
 npm install -g http-server
-
-nohup http-server public/ -p 80 --cors &
+npm install -g nodemon
+webpack --progress --config webpack.production.config.js

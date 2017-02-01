@@ -15,8 +15,7 @@ const stores = { dataStore, viewStore };
 ReactDOM.render(
   <Provider {...stores} >
     <Router history={browserHistory}>
-      <Route path="/" component={App} onLeave={() => viewStore.resetFilters()} />
-      <Route path="/:granularity/:filter" component={App} />
+      <Route path="/" component={App} />
     </Router>
   </Provider>,
   document.getElementById('app')
