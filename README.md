@@ -17,38 +17,54 @@ Our infrastructure and datasets also allow us to explore other topics such as:
 - 11k restaurants (e.g. [LaFourchette](https://www.lafourchette.com))
 - 35k meals (extracted from the restaurants' menus)
 - 170k recipes (various websites, e.g [cuisineAZ](http://cuisineaz.com))
+- 1.3M ingredients (derived from the recipes)
 - 5k products (e.g. [FDDB](http://fddb.info), [OpenFood](https://www.openfood.ch))
 - 40k nutriments (extracted from the products)
 
+## Assumptions
+
+We assumed that:
+
+- the restaurants listed in LaFourchette were representative enough of the local food habits.
+- we could associate recipes to meals and products to recipes well enough to derive the nutritious facts for a meal.
+
 ## Data pipeline 
 
+We implemented the following data pipeline :
 ![Visualization of the data pipeline](images/pipeline.png)
 
 ## Matching
 
+We used this process to find matches:
 ![Visualization of the matching system](images/matching.png)
 
-## Food trends
+#### Types of matching
+|     |     |
+|:---:|:---:|
+| **Rare events, misspelled, grouped**<br />Pavé de boeuf aux morilles<br />_Pavé de boeuf aux morilles_ simplissimes   |   **Order tolerance**<br />Tiramisu caramel speculos beurre salé<br />_Tiramisu au caramel_ au _beurre salé_  et _spéculoos_    |
+| **Wide, personal meaning**<br />café gourmand<br />_café gourmand_ à ma façon     | **Exact match**<br />Salade d'orange au miel et à la cannelle<br />_Salade d'orange au miel et à la cannelle_   |
+| **Principal component**<br />Rognons de lapins à la moutarde de Meaux<br />Fricassée de champignons à la moutarde de Meaux    | **Limited difference**<br />Terrine de foie gras et confiture de pruneaux<br />_Terrine de foie gras_ aux _pruneaux_ et raisins secs    |
+| **Unknown, language**<br />Tartare de boeuf minute, salade et potatoes<br />Twice baked _potatoes_ au bacon | **Complex**<br />Cassolette de Saint-Jacques et crevettes<br />Ravioles, noix _de Saint-Jacques_ et _crevettes_ en _cassolettes_ raffinées    |
 
-|                                                           |                                                    |
-|:---------------------------------------------------------:|:--------------------------------------------------:|
-|               Energy(kCal) per country                    |               Energy(kCal) per city                |
-| ![Energy trend per country](images/energy_country.png)    | ![Energy trend per city](images/energy_city.png)   |
-|               Protein per country                         |               Protein per city                     |
-| ![Protein trend per country](images/protein_country.png)  | ![Protein trend per city](images/protein_city.png) |
-|               Carbohydrates per country                   |               Carbohydrates per city               |
-| ![carbs trend per country](images/carbs_country.png)      | ![Carbs trend per city](images/carbs_city.png)     |
-|               Salt per country                            |               Salt per city                        |
-| ![Salt trend per country](images/salt_country.png)        | ![Salt trend per city](images/salt_city.png)       |
+
+
+## Food trends
+A few examples of food facts we can extract from the datasets with our infrastructure
+|                                                                                       |                                                                               |
+|:-------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------:|
+| ![Energy trend per country](images/energy_country.png)<br />Energy(kCal) per country  | ![Energy trend per city](images/energy_city.png)<br />Energy(kCal) per city   |
+| ![Protein trend per country](images/protein_country.png)<br />Protein per country     | ![Protein trend per city](images/protein_city.png)<br />Protein per city      |
+| ![carbs trend per country](images/carbs_country.png)<br />Carbohydrates per country   | ![Carbs trend per city](images/carbs_city.png)<br />Carbohydrates per city    |
+| ![Salt trend per country](images/salt_country.png)<br />Salt per country              | ![Salt trend per city](images/salt_city.png)<br />Salt per city               |
 
 ## Visualization
 
 Here are a few visualization examples for cliché-meal searches:
 
-|     |     |
-|:---:|:---:|
-| ![First visualization example](images/map1.png)  | ![Second visualization example](images/map2.png) |
-| Choucroute (red), Malakoff (blue)    |  Fondue Savoyarde (red), Fondue au fromage (blue)   |
+|                                                   |                                                   |
+|:-------------------------------------------------:|:-------------------------------------------------:|
+| ![First visualization example](images/map1.png)   | ![Second visualization example](images/map2.png)  |
+|           Choucroute (red), Malakoff (blue)       |  Fondue Savoyarde (red), Fondue au fromage (blue) |
 
 ## Results
 
