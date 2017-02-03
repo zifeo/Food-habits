@@ -28,11 +28,11 @@ Our infrastructure and datasets also allow us to explore other topics such as:
 We assumed that:
 
 - the restaurants listed in LaFourchette were representative enough of the local food habits.
-- we could associate recipes to meals and products to recipes well enough to derive the nutritious facts for a meal.
+- we could associate recipes to meals and products to recipes well enough to derive the nutritious facts for a meal without suffering too much of variance and central limit theorem.
 
 ## Data pipeline 
 
-We implemented the following data pipeline :
+We implemented the following data pipeline:
 
 ![Visualization of the data pipeline](images/pipeline.png)
 
@@ -55,7 +55,7 @@ We used this process to find matches:
 
 A few examples of food facts we can extract from the datasets with our infrastructure.
 
-|                                                                                       |                                                                               |
+| Per country | Per city |
 |:-------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------:|
 | ![Energy trend per country](images/energy_country.png)<br />Energy(kCal) per country  | ![Energy trend per city](images/energy_city.png)<br />Energy(kCal) per city   |
 | ![Protein trend per country](images/protein_country.png)<br />Protein per country     | ![Protein trend per city](images/protein_city.png)<br />Protein per city      |
@@ -64,9 +64,9 @@ A few examples of food facts we can extract from the datasets with our infrastru
 
 ## Visualization
 
-Here are a few visualization examples for cliché-meal searches:
+Here are a few visualization examples for cliché-meal searches.
 
-|                                                   |                                                   |
+| Speciality | Different kind |
 |:-------------------------------------------------:|:-------------------------------------------------:|
 | ![First visualization example](images/map1.png)   | ![Second visualization example](images/map2.png)  |
 | [Choucroute](https://en.wikipedia.org/wiki/Choucroute_garnie) (red), [Malakoff](https://en.wikipedia.org/wiki/Malakoff_(food)) (blue) | [Fondue Savoyarde](https://en.wikipedia.org/wiki/Fondue) (red), [Fondue au fromage](https://en.wikipedia.org/wiki/Fondue#French_alpine) (blue) |
@@ -74,7 +74,7 @@ Here are a few visualization examples for cliché-meal searches:
 ## Results
 
 Expected food trends were present as one could expect from well-known clichés. Looking closer at the estimated nutritious facts, the high variance and noisiness of the datasets coupled to matching process increases the difficutly of the analysis.
-No relevant area-based nutrition bias among the insights was found. One could nonetheless use the matching process and the pipeline as tools for further investigation.
+No relevant area-based nutrition bias among the insights was found. One could nonetheless use the matching process and the pipeline as tools for further in depth investigation.
 
 ## Expected and encountered challenges
 
@@ -85,23 +85,23 @@ Before starting the project, we expected the following points to be the most cha
 - content languages : textual informations (including menus) can have different name depending on area, standardization and translation might be needed
 - data completeness : non food data might need be extracted from different sources to achieve a valuable meaning
 
-After finishing the projects, the challenges actually were the following ones:
+After finishing the project, the challenges actually were the following ones:
 
-- Data mining and normalization (high variance, different sources, captchas)
-- Data organization (complex queries, centralized storage with ElasticSearch)
-- French NLP (weird characters, hard modeling)
-- Matching (many candidates, heterogeneous units)
-- Computationally heavy (vectorization, visualization)
+- data mining and normalization (high variance, different sources, captchas)
+- data organization (complex queries, centralized storage with ElasticSearch)
+- french NLP (weird characters, hard modeling)
+- matching (many candidates, heterogeneous units)
+- computationally heavy (vectorization, visualization)
 
 Regarding the content languages, no data was available for the German and Italian part of Switzerland on LaFourchette. Therefore we focused our work on France and the French part of Switzerland.
 
 ## Improvements
 
-- Formal statistical evaluation
-- Deep recurrent model for matching
-- Computational efficiency
-- Expand visualization
-- More and enhanced data for Switzerland
+- formal statistical evaluation: as limited in time, the project does not contain a lot of insights. This could be definetly enhanced to increase modelling and evaluation.
+- deep recurrent model for matching: one should evalute the effiency of neural net to match meal to recipes.
+- computational efficiency: currently the matching last 20 seconds per restaurant (centralized server), this could be improved by batching, parallelisation and local server.
+- expand visualization: better interactive and more diverse kind of visuzalization.
+- more and enhanced data for Switzerland: data precision is still an issue. This could have been improved by using personal restaurant websites for example. 
 
 ## License
 
