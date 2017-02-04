@@ -1,12 +1,12 @@
 # 3 webserver
 
-As we had our data in the elastic search we decided to do a small visualization using leaflet to show food trends.
+As we had our data in the elasticsearch instance, we decided to do a small visualization using Leaflet to show food trends.
 
 ## Small visualization using the elastic search database we created.
 
 You can search for dishes in the trend field to show which restaurants have it in one of their meals.
 
-There is an instance running at this address 51.15.135.251:5000 (It will be shutdown in the beginning of the next semester)
+There is an instance running at this address 51.15.135.251:5000 (it will be shutdown at the start of the next semester)
 
 We use it to show how some dishes are present only in some regions.
 
@@ -24,11 +24,11 @@ The installation script will take care of installing [NodeJS](https://nodejs.org
 ./install_server.sh
 ```
 
-Specifically, it'll install the NodeJS dependencies required to run the app in a folder named `node_modules`.
+Specifically, it will install the NodeJS dependencies required to run the app in a folder named `node_modules`.
 
 ### build command
 
-build the app for production:
+Build the app for production:
 
 ```bash
 npm run build:prod
