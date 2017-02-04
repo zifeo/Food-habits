@@ -5,9 +5,9 @@ This project is part of the [EPFL](http://epfl.ch)'s [Applied Data Analysis cour
 ## Abstract
 
 Switzerland is well know for its rich heritage: incredible landscapes, watches, cheese, chocolate and diversified influences from its five neighboring countries. This project investigates how this heritage is reflected in terms of food habits.
-Thanks to the high restaurant density, we picked 2 Swiss and 3 French cities to get insights about dietetics. We mapped restaurant meals to recipes and ingredients of recipes to products to analyze corresponding nutriments. 
+We picked 2 Swiss and 3 French cities with high restaurant density to get insights about dietetics. We mapped restaurant meals to recipes and ingredients of recipes to products to analyze the corresponding nutriments. 
 
-_**Is any area-based nutrition bias ?**_
+_**Is there any area-based nutrition bias ?**_
 
 Our infrastructure and datasets also allow us to explore other topics such as:
 
@@ -73,7 +73,7 @@ Here are a few visualization examples for cliché-meal searches.
 
 ## Results
 
-Expected food trends were present as one could expect from well-known clichés. Looking closer at the estimated nutritious facts, the high variance and noisiness of the datasets coupled to matching process increases the difficutly of the analysis.
+Expected food trends were present as one could expect from well-known clichés. Looking closer at the estimated nutritious facts, the high variance and noisiness of the datasets coupled to the matching process increases greatly the difficutly of our analysis.
 No relevant area-based nutrition bias among the insights was found. One could nonetheless use the matching process and the pipeline as tools for further in depth investigation.
 
 ## Expected and encountered challenges
@@ -93,16 +93,16 @@ After finishing the project, the challenges actually were the following ones:
 - matching (many candidates, heterogeneous units)
 - computationally heavy (vectorization, visualization)
 
-Regarding the content languages, no data was available for the German and Italian part of Switzerland on LaFourchette. Therefore we focused our work on France and the French part of Switzerland.
+Regarding the content languages, no data was available for the German and Italian part of Switzerland on LaFourchette. Hence we focused our work on France and the French part of Switzerland.
 
 ## Improvements
 
 - formal statistical evaluation: as limited in time, the project does not contain a lot of insights. This could be definetly enhanced to increase modelling and evaluation.
-- deep recurrent model for matching: one should evalute the effiency of neural net to match meal to recipes.
-- computational efficiency: currently the matching last 20 seconds per restaurant (centralized server), this could be improved by batching, parallelisation and local server.
+- deep recurrent neural network for matching: one should evalute the effiency of neural net to match meal to recipes.
+- computational efficiency: currently the matching lasts 20 seconds per restaurant (centralized server), this could be improved by batching, parallelisation and local server.
 - expand visualization: better interactive and more diverse kind of visuzalization.
 - more and enhanced data for Switzerland: data precision is still an issue. This could have been improved by using personal restaurant websites for example. 
 
 ## License
 
-Project is available under [Apache 2.0](./LICENSE) license and data belong their owners under appropriate licensing.
+Project is available under [Apache 2.0](./LICENSE) license and data belong to their owners under appropriate licensing.
