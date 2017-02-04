@@ -20,4 +20,5 @@ With this we had a total of more than 170'595 recipes.
 ## nutriments
 
 For nutrition facts, we scrapped the FDDB database to complement our original dataset from OpenFood, a database of products sold in Switzerland (from the Coop and Migros stores).
-This website had a total of 450 products with their nutriment composition which we used later in our analysis.
+This website had a total of 450 products with their nutriment composition which we used later in our analysis. 
+Those products were needed because the Openfood database lacked nutrition facts about fresh products, which were listed on the FDDB website. We estimated the nutritious facts between both datasets to be coherent, therefore we merged them.

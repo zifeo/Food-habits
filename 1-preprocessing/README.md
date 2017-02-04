@@ -1,7 +1,7 @@
 # 1 Preprocessing
 
-Before we used the data for our project we had to first preprocess it so that it was usable as we wanted to.
-For each of the websites we scrapped we had to do a different process to get the data we wanted out of the text.
+Before we used the data for our project, we had to first preprocess it so that it was usable as we wanted to.
+For each of the websites we scrapped we had to use a different process to get the data we wanted out of the text.
 
 ## Restaurants
 
@@ -10,7 +10,7 @@ As we had only one restaurant website, we used the internal hierachy of the webp
 
 ## Recipes
 
-This was the most difficult part as we had so many websites. Therefore we choose this simple representation for a recipe :
+This was the most difficult part as we had so many websites. Therefore we chose this simple representation for a recipe :
 
 ```
 recipe: {
