@@ -12,7 +12,7 @@ We thought this was enough as it gave us more than 100000 meals.
 ## Recipes
 
 For recipes we needed a lot more data to be able to correctly link them to the restaurants meals.
-As there is not **one** bit french recipies website we decided to scrap a few of them : 
+As there is not **one** big french recipies website we decided to scrap a few of them : 
 750g, cuisineAZ, journaldesfemmes, ricardocuisine and marmiton
 The one which gave us the most difficulties is marmiton, you can see why in the README file in the marmiton folder.
 With this we had a total of more than 170595 recipes.
