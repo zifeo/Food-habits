@@ -6,7 +6,7 @@ For our project we needed a lot of data to be statistically significant as we kn
 
 We started with LaFourchette.com which is a very well known restaurant reservation / recommendation website both in France and Switzerland.
 We used scrapy to scrap as many of the restaurants we could get from the website. 
-We got a total of 11'567 restaurants (9'997 in France, 1'570 in switzerland) with the complete list of the meals they propose. 
+We got a total of 11'567 restaurants (9'997 in France, 1'570 in switzerland) with the complete list of the meals they propose and their location. 
 We thought this was enough as it gave us more than 100'000 meals.
 
 ## Recipes
