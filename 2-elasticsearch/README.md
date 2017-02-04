@@ -1,7 +1,7 @@
 # 2 Elastic Search
 
 Now that we had all the data pre-processed we wanted to store it in a database for it to be easily accessible and searchable.
-We chose elasticsearch as it is renown to be very fast and allows us to integrate usefull mathcing processe such as stopword removal, acii folding, etc...
+We chose elasticsearch as it is reknown to be very fast and allows us to integrate usefull matching processes such as stopword removal, ascii folding, etc...
 We run an instance of it on docker on a remote server and pushed all our data to it.
 
 ## Stack with elasticsearch

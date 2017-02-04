@@ -30,6 +30,11 @@ We assumed that:
 - the restaurants listed in LaFourchette were representative enough of the local food habits.
 - we could associate recipes to meals and products to recipes well enough to derive the nutritious facts for a meal without suffering too much of variance and central limit theorem.
 
+## Journey
+
+Each folder in this git is a step in the developpement of this project. Each folder contains a README describing what we did and why. 
+We recommend reading them to get a better idea of the work we have done.
+
 ## Data pipeline 
 
 We implemented the following data pipeline:
