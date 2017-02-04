@@ -6,7 +6,7 @@ For each of the websites we scrapped we had to do a different process to get the
 ## Restaurants
 
 We had to extract from each restaurant the meals they were prposing and integrated it in a Pandas dataFrame. 
-As we had only one restaurant it we used the internal hierachy of the webpage as a template for our dataFrame.
+As we had only one restaurant website we used the internal hierachy of the webpage as a template for our dataFrame.
 
 ## Recipes
 
